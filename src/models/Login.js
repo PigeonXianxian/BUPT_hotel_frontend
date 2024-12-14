@@ -56,7 +56,6 @@ export default class User {
         body: JSON.stringify({
           username: this.username,
           password: this.password,
-          userType: this.userType,
         }),
       });
 
