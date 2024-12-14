@@ -14,6 +14,13 @@ import "element-plus/dist/index.css";
 app.use(ElementPlus);
 ```
 
+## 人话版：如何运行
+
+1. `yarn install`
+2. `yarn run dev`
+
+**p.s.** 如果依赖下载缓慢，请换淘宝镜像
+
 air-con
 
 ## Install the dependencies
