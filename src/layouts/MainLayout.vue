@@ -11,28 +11,55 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title>
-          BUPT大酒店
-        </q-toolbar-title>
+        <q-toolbar-title> BUPT大酒店 </q-toolbar-title>
 
         <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      bordered
-    >
+    <q-drawer v-model="leftDrawerOpen">
       <q-list>
-        <q-item-label
-          header
-        >
-          功能列表
-        </q-item-label>
+        <q-item-label header> 功能列表 </q-item-label>
+
+        <q-item clickable v-ripple to="/">
+          <q-item-section avatar>
+            <q-icon name="home" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>回到首页</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item clickable v-ripple to="/check-in">
+          <q-item-section avatar>
+            <q-icon name="hotel" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>入住界面</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item clickable v-ripple to="/check-out">
+          <q-item-section avatar>
+            <q-icon name="money" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>结账界面</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item clickable v-ripple to="/monitoring">
+          <q-item-section avatar>
+            <q-icon name="remove_red_eye" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>监控界面_经理</q-item-label>
+          </q-item-section>
+        </q-item>
 
         <q-item clickable v-ripple to="/admin">
           <q-item-section avatar>
-            <q-icon name="home" />
+            <q-icon name="person" />
           </q-item-section>
           <q-item-section>
             <q-item-label>管理员界面</q-item-label>
@@ -44,7 +71,7 @@
             <q-icon name="remove_red_eye" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>监控界面</q-item-label>
+            <q-item-label>监控界面_管理员</q-item-label>
           </q-item-section>
         </q-item>
 
@@ -102,15 +129,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from "vue";
 
 defineOptions({
-  name: 'MainLayout'
-})
+  name: "MainLayout",
+});
 
-const leftDrawerOpen = ref(false)
+const leftDrawerOpen = ref(false);
 
-function toggleLeftDrawer () {
-  leftDrawerOpen.value = !leftDrawerOpen.value
+function toggleLeftDrawer() {
+  leftDrawerOpen.value = !leftDrawerOpen.value;
 }
 </script>

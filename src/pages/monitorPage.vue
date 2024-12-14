@@ -5,19 +5,27 @@
       <div class="container">
         <div v-for="(room, index) in rooms" :key="index" class="room-container">
           <div class="right-side q-pa-md shadow-5">
-            <h5 class="text-center">{{ room.roomNumber || '——' }}房空调监控</h5>
+            <h5 class="text-center">{{ room.roomNumber || "——" }}房空调监控</h5>
             <q-list dark bordered separator>
               <q-item>
                 <q-item-section>
                   <q-item-label overline>房间信息</q-item-label>
-                  <q-item-label>房间号：{{ room.roomNumber || '——' }}</q-item-label>
+                  <q-item-label
+                    >房间号：{{ room.roomNumber || "——" }}</q-item-label
+                  >
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
                   <q-item-label overline>空调当前运行状态</q-item-label>
                   <q-item-label>
-                    <q-btn v-if="room.valid" outline style="color:white" :label="room.acState ? '开机' : '关机'" @click="toggleAcState(index)" />
+                    <q-btn
+                      v-if="room.valid"
+                      outline
+                      style="color: white"
+                      :label="room.acState ? '开机' : '关机'"
+                      @click="toggleAcState(index)"
+                    />
                     <span v-if="!room.valid">——</span>
                   </q-item-label>
                 </q-item-section>
@@ -25,33 +33,53 @@
               <q-item>
                 <q-item-section>
                   <q-item-label overline>工作模式</q-item-label>
-                  <q-item-label>{{ room.operationMode || '——' }}</q-item-label>
+                  <q-item-label>{{ room.operationMode || "——" }}</q-item-label>
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
                   <q-item-label overline>温度信息</q-item-label>
-                  <q-item-label>当前室温: {{ room.currentTemperature || '——' }}°C&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;目标温度: {{ room.targetTemperature || '——' }}°C</q-item-label>
+                  <q-item-label
+                    >当前室温:
+                    {{
+                      room.currentTemperature || "——"
+                    }}°C&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;目标温度:
+                    {{ room.targetTemperature || "——" }}°C</q-item-label
+                  >
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
                   <q-item-label overline>当前风速</q-item-label>
-                  <q-item-label>{{ room.currentFanSpeed || '——' }}</q-item-label>
+                  <q-item-label>{{
+                    room.currentFanSpeed || "——"
+                  }}</q-item-label>
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
                   <q-item-label overline>费用信息</q-item-label>
-                  <q-item-label>当前费用: {{ room.currentCost? room.currentCost.toFixed(2) + '元': '——' }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;累计费用: {{ room.totalCost? room.totalCost.toFixed(2) + '元': '——' }}</q-item-label>
+                  <q-item-label
+                    >当前费用:
+                    {{
+                      room.currentCost
+                        ? room.currentCost.toFixed(2) + "元"
+                        : "——"
+                    }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;累计费用:
+                    {{
+                      room.totalCost ? room.totalCost.toFixed(2) + "元" : "——"
+                    }}</q-item-label
+                  >
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
                   <q-item-label overline>调度状态</q-item-label>
-                  <q-item-label v-if="room.valid">{{ room.scheduleStatus ? '运行' : '等待'}}</q-item-label>
+                  <q-item-label v-if="room.valid">{{
+                    room.scheduleStatus ? "运行" : "等待"
+                  }}</q-item-label>
                   <q-item-label v-if="!room.valid">——</q-item-label>
                 </q-item-section>
               </q-item>
@@ -64,8 +92,8 @@
 </template>
 
 <script setup>
-import { onMounted, reactive } from 'vue';
-import RoomMonitor from 'src/models/RoomMonitor';
+import { onMounted, onUnmounted, reactive } from "vue";
+import RoomMonitor from "src/models/RoomMonitor";
 
 // 创建响应式的rooms数据
 const rooms = reactive([
@@ -81,21 +109,39 @@ const rooms = reactive([
   new RoomMonitor(10),
 ]);
 
+// 定时器ID，用于在组件卸载时清除
+let intervalId = null;
+
 // 切换空调状态的方法
 const toggleAcState = (index) => {
   rooms[index].acState = !rooms[index].acState;
-  if(rooms[index].acState){
-    rooms[index].MonitorPowerOn('/monitor/monitorpoweron');
+  if (rooms[index].acState) {
+    rooms[index].MonitorPowerOn("/monitor/monitorpoweron");
   } else {
-    rooms[index].MonitorPowerOff('/monitor/monitorpoweroff')
+    rooms[index].MonitorPowerOff("/monitor/monitorpoweroff");
   }
 };
 
-// 在组件挂载后请求房间状态
+// 在组件挂载后初始化定时器
 onMounted(() => {
-  rooms.forEach(room => {
-    room.MonitorRequestStates('/monitor/monitorrequeststates');
+  // 初始状态请求
+  rooms.forEach((room) => {
+    room.MonitorRequestStates("/monitor/monitorrequeststates");
   });
+
+  // 每隔3秒轮询房间状态
+  intervalId = setInterval(() => {
+    rooms.forEach((room) => {
+      room.MonitorRequestStates("/monitor/monitorrequeststates");
+    });
+  }, 3000);
+});
+
+// 在组件卸载时清除定时器
+onUnmounted(() => {
+  if (intervalId) {
+    clearInterval(intervalId);
+  }
 });
 </script>
 
@@ -106,7 +152,7 @@ onMounted(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('../assets/images/bedroom.png');
+  background-image: url("../assets/images/bedroom.png");
   background-size: cover;
   filter: blur(4px);
   z-index: -1;
@@ -140,17 +186,14 @@ onMounted(() => {
   width: 100%;
   background-color: black;
   color: white;
-  padding-left: 30px;    /* 左侧内边距 */
-  padding-right: 30px;   /* 右侧内边距 */
-  padding-top: 15px;     /* 上侧内边距 */
-  padding-bottom: 40px;  /* 下侧内边距 */
-  border-radius: 15px;   /* 圆角半径 */
+  padding-left: 30px; /* 左侧内边距 */
+  padding-right: 30px; /* 右侧内边距 */
+  padding-top: 15px; /* 上侧内边距 */
+  padding-bottom: 40px; /* 下侧内边距 */
+  border-radius: 15px; /* 圆角半径 */
 }
 
 h5.text-center {
   text-align: center;
 }
 </style>
-
-
-

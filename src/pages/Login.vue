@@ -41,7 +41,6 @@
           </div>
           <el-form-item prop="username">
             <el-input
-              prefix-icon="el-icon-user"
               size="large"
               placeholder="请输入账号"
               v-model="user.username"
@@ -49,7 +48,6 @@
           </el-form-item>
           <el-form-item prop="password">
             <el-input
-              prefix-icon="el-icon-lock"
               size="large"
               show-password
               placeholder="请输入密码"
@@ -59,7 +57,6 @@
           <el-form-item prop="code">
             <div style="display: flex">
               <el-input
-                prefix-icon="el-icon-circle-check"
                 size="large"
                 placeholder="请输入验证码"
                 style="flex: 1"

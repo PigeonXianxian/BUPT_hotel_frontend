@@ -46,23 +46,13 @@
           </div>
           <el-form-item prop="username">
             <el-input
-              prefix-icon="el-icon-user"
               size="large"
               placeholder="请输入账号"
               v-model="user.username"
             ></el-input>
           </el-form-item>
-          <el-form-item prop="userType">
-            <el-input
-              prefix-icon="el-icon-link"
-              size="large"
-              placeholder="请输入身份"
-              v-model="user.userType"
-            ></el-input>
-          </el-form-item>
           <el-form-item prop="password">
             <el-input
-              prefix-icon="el-icon-lock"
               size="large"
               show-password
               placeholder="请输入密码"
@@ -71,7 +61,6 @@
           </el-form-item>
           <el-form-item prop="confirmPass">
             <el-input
-              prefix-icon="el-icon-lock"
               size="large"
               show-password
               placeholder="请确认密码"
@@ -120,31 +109,14 @@ export default {
       }
     };
 
-    const validateUserType = (rule, userType, callback) => {
-      if (userType === "") {
-        callback(new Error("请输入身份"));
-      } else if (
-        userType !== "customer" &&
-        userType !== "manager" &&
-        userType !== "reception" &&
-        userType !== "administrator"
-      ) {
-        callback(new Error("未知身份"));
-      } else {
-        callback();
-      }
-    };
-
     return {
       user: {
         username: "",
         password: "",
         confirmPass: "",
-        userType: "",
       },
       rules: {
         username: [{ required: true, message: "请输入账号", trigger: "blur" }],
-        userType: [{ validator: validateUserType, trigger: "blur" }],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }],
         confirmPass: [{ validator: validatePassword, trigger: "blur" }],
       },
@@ -159,7 +131,6 @@ export default {
           console.log("发送注册请求");
           USER.username = this.user.username;
           USER.password = this.user.password;
-          USER.userType = this.user.userType;
           //console.log("当前USER数据:", USER);
           USER.Register("/api/register");
           //this.$request.post('/login', this.user).then(res => {
