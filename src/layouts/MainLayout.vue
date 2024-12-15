@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header elevated :style="{ backgroundColor: 'rgb(254,166,113)' }">
       <q-toolbar>
         <q-btn
           flat
@@ -141,3 +141,5 @@ function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
 </script>
+
+

@@ -1,6 +1,7 @@
 <template>
   <q-page class="flex flex-center">
     <div class="background"></div>
+    <div class="overlay"></div> <!-- 新增的透明图层 -->
     <div class="container">
       <div class="left-side">
         <img
@@ -23,7 +24,7 @@
             <span>目标温度:</span>
             <q-input
               v-if="customer.acState"
-              dark
+
               v-model.number="customer.targetTemperature"
               type="number"
               style="width: 60px; margin-left: 8px"
@@ -83,8 +84,7 @@
         <div style="height: 20px"></div>
         <div class="row justify-center q-mt-lg">
           <q-btn
-            outline
-            style="color: white; width: 200px"
+            style="color: black; width: 200px; background: rgb(229,193,133)"
             :label="customer.acState ? '关机' : '开机'"
             @click="toggleAC"
           />
@@ -196,10 +196,22 @@ onBeforeUnmount(() => {
   z-index: -1;
 }
 
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.3); /* 白色透明度30% */
+  z-index: 0;
+}
+
 .container {
   display: flex;
   width: 80%;
   max-width: 800px;
+  z-index: 1; /* 确保容器在最上层 */
+  box-shadow: 0 0 30px -1px rgba(0, 0, 0, 0.8); /* 添加较强阴影 */
 }
 
 .left-side {
@@ -211,23 +223,30 @@ onBeforeUnmount(() => {
 
 .right-side {
   width: 50%;
-  background-color: black;
-  color: white;
+  background-color: rgba(255,240,212,0.9); /* 修改背景颜色 */
+  color: black; /* 文字颜色调整为黑色以便阅读 */
   padding-left: 30px; /* 左侧内边距 */
   padding-right: 30px; /* 右侧内边距 */
+  font-weight: bold; /* 加粗字体 */
 }
 
 h5.text-center {
   text-align: center;
+  font-weight: bold; /* 加粗字体 */
 }
 
 .q-field__native,
 .q-field__label,
 .q-toggle__label {
-  color: white !important;
+  color: black !important; /* 字段文字颜色调整为黑色 */
+  font-weight: bold; /* 加粗字体 */
 }
 
 .q-btn--standard {
-  color: white;
+  color: black; /* 按钮文字颜色调整为黑色 */
+  font-weight: bold; /* 加粗字体 */
 }
 </style>
+
+
+
