@@ -4,7 +4,7 @@
 登录：/login
 注册：/register
 
-**[重要]**
+**[现在已经不重要]**
 由于本人天才地使用了 ElForm 且没用用 quasar，和其他人合起来以后，quasar 没有 main.js，只有一直刷新的 app.js，搞 boot 没调出来，局部调用很丑，于是只能每次执行`yarn run dev`后手动在`app.js`里加入以下内容：
 
 ```js
