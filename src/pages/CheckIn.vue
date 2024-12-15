@@ -15,21 +15,9 @@
         <q-step__content default name="info" title="提供身份证" :done="step > 'info'">
           <q-input filled v-model="name" label="姓名：" autocomplete="name" label-color="black"/>
           <q-input filled v-model="id" label="身份证号：" autocomplete="id" label-color="black"/>
-          <q-btn
-            @click="next"
-            :disable="!id || !name"
-            style="color: black; width: 200px; background: rgb(229,193,133)"
-            label="下一步"
-          />
         </q-step__content>
         <q-step__content name="deposit" title="收取押金" :done="step > 'deposit'">
           <q-input filled v-model="deposit" label="押金金额：" label-color="black"/>
-          <q-btn
-            @click="next"
-            :disable="!deposit"
-            style="color: black; width: 200px; background: rgb(229,193,133)"
-            label="下一步"
-          />
         </q-step__content>
         <q-step__content name="room" title="分配房间" :done="step > 'room'">
           <q-input filled v-model="room" label="房间号：" autocomplete="room" label-color="black"/>
