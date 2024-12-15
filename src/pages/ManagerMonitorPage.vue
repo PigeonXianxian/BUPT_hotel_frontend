@@ -2,18 +2,8 @@
   <div class="container">
     <!-- 导航栏 -->
     <div class="button-group">
-      <button
-        @click="changeReportPeriod('daily')"
-        :class="{ active: reportPeriod === 'daily' }"
-      >
-        日报
-      </button>
-      <button
-        @click="changeReportPeriod('weekly')"
-        :class="{ active: reportPeriod === 'weekly' }"
-      >
-        周报
-      </button>
+      <button @click="changeReportPeriod('daily')" :class="{'active': reportPeriod === 'daily'}">日报</button>
+      <button @click="changeReportPeriod('weekly')" :class="{'active': reportPeriod === 'weekly'}">周报</button>
     </div>
 
     <!-- 表格部分 -->
@@ -45,23 +35,24 @@
     </table>
 
     <!-- 报表图表部分 -->
-    <div v-show="reportData.length > 0" class="chart-container">
+    <div class="chart-container">
       <button @click="viewChart('line')">折线图</button>
       <button @click="viewChart('pie')">饼图</button>
-      <div ref="chartContainer" class="chart"></div>
+      <!-- 使用 v-show 控制这里的 chart div -->
+      <div v-show="reportData.length > 0" ref="chartContainer" class="chart"></div>
     </div>
   </div>
 </template>
 
 <script>
-import * as echarts from "echarts"; // 引入 ECharts
-import AirConReport from "../models/Monitor"; // 引入 AirConReport 类
+import * as echarts from 'echarts';  // 引入 ECharts
+import AirConReport from '../models/Monitor';  // 引入 AirConReport 类
 
 export default {
-  name: "MonitorPage",
+  name: 'MonitorPage',
   data() {
     return {
-      reportPeriod: "daily", // 默认为日报
+      reportPeriod: 'daily', // 默认为日报
       reportData: [], // 存储报表数据
       airConReportInstance: new AirConReport(), // 创建 AirConReport 类的实例
     };
@@ -77,61 +68,66 @@ export default {
     async fetchReportData() {
       this.airConReportInstance.setPeriod(this.reportPeriod); // 设置报表周期
       try {
-        // 获取报表数据
-        const data = await this.airConReportInstance.getAirConReport(
-          "/api/aircon/report"
-        );
-
-        // 更新报表数据
+        const data = await this.airConReportInstance.getAirConReport('/api/aircon/report');
         this.reportData = data;
 
-        // 默认显示折线图
-        this.viewChart("line");
+        // 使用 nextTick 确保图表容器已经渲染
+        this.$nextTick(() => {
+          this.viewChart('line'); // 默认显示折线图
+        });
       } catch (error) {
         console.error("报表数据获取失败:", error);
       }
     },
 
     // 查看图表
-    viewChart(type = "line") {
+    viewChart(type = 'line') {
       const chartContainer = this.$refs.chartContainer;
       const data = {
-        labels: this.reportData.map((item) => item.room), // 房间号作为x轴标签
+        labels: this.reportData.map(item => item.room), // 房间号作为x轴标签
         datasets: [
           {
-            label: "总费用",
-            data: this.reportData.map((item) => parseFloat(item.totalCost)), // 总费用作为y轴数据
+            label: '总费用',
+            data: this.reportData.map(item => parseFloat(item.totalCost)), // 总费用作为y轴数据
           },
         ],
       };
 
       let option = {};
-      if (type === "line") {
+      if (type === 'line') {
         // 折线图
         option = {
+          grid: {
+            left: '10%',
+            right: '10%',
+            top: '20%',
+            bottom: '20%',
+          },
           xAxis: {
-            type: "category",
+            type: 'category',
             data: data.labels,
           },
           yAxis: {
-            type: "value",
+            type: 'value',
           },
           series: [
             {
+              name: '总费用', // 设置系列名称，用于图例显示
               data: data.datasets[0].data,
-              type: "line",
+              type: 'line',
               smooth: true,
-              lineStyle: { color: "#ff6384" },
+              lineStyle: { color: '#ff6384' },
             },
           ],
         };
-      } else if (type === "pie") {
+      } else if (type === 'pie') {
         // 饼图
         option = {
           series: [
             {
-              name: "总费用",
-              type: "pie",
+              name: '总费用',
+              type: 'pie',
+              radius: '50%',  // 设置饼图的半径为50%
               data: data.labels.map((label, index) => ({
                 name: label,
                 value: data.datasets[0].data[index],
@@ -140,7 +136,7 @@ export default {
                 itemStyle: {
                   shadowBlur: 10,
                   shadowOffsetX: 0,
-                  shadowColor: "rgba(0, 0, 0, 0.5)",
+                  shadowColor: 'rgba(0, 0, 0, 0.5)',
                 },
               },
             },
@@ -153,7 +149,7 @@ export default {
       myChart.setOption(option); // 设置图表选项
 
       // 确保图表在窗口大小变化时自动适应
-      window.addEventListener("resize", () => {
+      window.addEventListener('resize', () => {
         myChart.resize();
       });
     },
@@ -166,7 +162,7 @@ export default {
 
 <style scoped>
 .container {
-  max-width: 100%; /* 容器宽度设置为 100% 或全屏 */
+  max-width: 100%;
   margin: 50px auto;
   padding: 20px;
   background-color: #fff;
@@ -204,8 +200,7 @@ table {
   margin-bottom: 20px;
 }
 
-table th,
-table td {
+table th, table td {
   padding: 8px;
   border: 1px solid #ddd;
   text-align: center;
@@ -214,13 +209,15 @@ table td {
 .chart-container {
   text-align: center;
   width: 100%; /* 容器宽度为100% */
-  max-width: 100%; /* 最大宽度为100% */
   margin: 0 auto; /* 居中容器 */
   margin-top: 30px;
 }
 
 .chart {
-  width: 100%; /* 宽度100%，占满容器 */
-  height: 400px; /* 固定高度，避免过小 */
+  width: 100%; /* 图表宽度100% */
+  height: 500px; /* 固定高度，可以根据需要调整 */
+  max-width: 100%; /* 最大宽度为100% */
+  margin: 0 auto; /* 居中显示 */
+  padding: 20px; /* 给图表内加点边距，避免过于紧凑 */
 }
 </style>
