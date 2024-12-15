@@ -94,9 +94,16 @@
 import { reactive } from "vue";
 import User from "src/models/Login";
 const USER = reactive(new User());
+import { ElForm, ElFormItem, ElInput, ElButton } from 'element-plus';
 
 export default {
   name: "SystemRegister",
+  components: {
+    ElForm,
+    ElFormItem,
+    ElInput,
+    ElButton
+  },
   data() {
     // 验证码校验
     const validatePassword = (rule, confirmPass, callback) => {

@@ -1301,7 +1301,7 @@ electron-to-chromium@^1.5.73:
 
 element-plus@^2.9.1:
   version "2.9.1"
-  resolved "https://registry.npmmirror.com/element-plus/-/element-plus-2.9.1.tgz#00cac40abaafe8806fc77b2552050e14a7693680"
+  resolved "https://registry.npmjs.org/element-plus/-/element-plus-2.9.1.tgz#00cac40abaafe8806fc77b2552050e14a7693680"
   integrity sha512-9Agqf/jt4Ugk7EZ6C5LME71sgkvauPCsnvJN12Xid2XVobjufxMGpRE4L7pS4luJMOmFAH3J0NgYEGZT5r+NDg==
   dependencies:
     "@ctrl/tinycolor" "^3.4.1"

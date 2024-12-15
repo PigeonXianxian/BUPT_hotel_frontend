@@ -100,12 +100,17 @@
 import { reactive } from "vue";
 import ValidCode from "src/components/ValidCode.vue";
 import User from "src/models/Login";
+import { ElForm, ElFormItem, ElInput, ElButton } from 'element-plus';
 const USER = reactive(new User());
 
 export default {
   name: "SystemLogin",
   components: {
     ValidCode,
+    ElForm,
+    ElFormItem,
+    ElInput,
+    ElButton
   },
   data() {
     // 验证码校验
