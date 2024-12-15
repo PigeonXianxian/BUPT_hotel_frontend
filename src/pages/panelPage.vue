@@ -1,6 +1,7 @@
 <template>
   <q-page class="flex flex-center">
     <div class="background"></div>
+    <div class="overlay"></div> <!-- 新增的透明图层 -->
     <div class="container">
       <div class="left-side">
         <img
@@ -196,10 +197,22 @@ onBeforeUnmount(() => {
   z-index: -1;
 }
 
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.3); /* 白色透明度30% */
+  z-index: 0;
+}
+
 .container {
   display: flex;
   width: 80%;
   max-width: 800px;
+  z-index: 1; /* 确保容器在最上层 */
+  box-shadow: 0 0 100px rgba(0, 0, 0, 0.6); /* 添加较强阴影 */
 }
 
 .left-side {
@@ -231,3 +244,6 @@ h5.text-center {
   color: white;
 }
 </style>
+
+
+

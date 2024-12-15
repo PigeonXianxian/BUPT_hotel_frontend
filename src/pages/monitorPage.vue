@@ -6,7 +6,7 @@
         <div v-for="(room, index) in rooms" :key="index" class="room-container">
           <div class="right-side q-pa-md shadow-5">
             <h5 class="text-center">{{ room.roomNumber || "——" }}房空调监控</h5>
-            <q-list dark bordered separator>
+            <q-list bordered separator>
               <q-item>
                 <q-item-section>
                   <q-item-label overline>房间信息</q-item-label>
@@ -22,7 +22,6 @@
                     <q-btn
                       v-if="room.valid"
                       outline
-                      style="color: white"
                       :label="room.acState ? '开机' : '关机'"
                       @click="toggleAcState(index)"
                     />
@@ -180,20 +179,31 @@ onUnmounted(() => {
   margin: 20px; /* 增加间距 */
   width: 45%; /* 调整宽度以适应两列布局 */
   max-width: 600px;
+  transition: transform 0.3s ease; /* 添加过渡效果 */
 }
 
 .right-side {
   width: 100%;
-  background-color: black;
-  color: white;
+  background-color: white;
+  color: black;
+  opacity: 0.8; /* 设置透明度为80% */
   padding-left: 30px; /* 左侧内边距 */
   padding-right: 30px; /* 右侧内边距 */
   padding-top: 15px; /* 上侧内边距 */
   padding-bottom: 40px; /* 下侧内边距 */
   border-radius: 15px; /* 圆角半径 */
+  transition: opacity 0.3s ease, box-shadow 0.3s ease; /* 添加过渡效果 */
 }
 
-h5.text-center {
-  text-align: center;
+.room-container:hover .right-side {
+  opacity: 1; /* 鼠标悬停时透明度变为100% */
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3); /* 鼠标悬停时增加阴影 */
+}
+
+.room-container:hover {
+  transform: translateY(-10px); /* 鼠标悬停时向上移动10px */
 }
 </style>
+
+
+
