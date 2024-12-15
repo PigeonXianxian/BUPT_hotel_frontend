@@ -1,47 +1,50 @@
 <template>
-  <div class="container">
-    <!-- 导航栏 -->
-    <div class="button-group">
-      <button @click="changeReportPeriod('daily')" :class="{'active': reportPeriod === 'daily'}">日报</button>
-      <button @click="changeReportPeriod('weekly')" :class="{'active': reportPeriod === 'weekly'}">周报</button>
-    </div>
+  <q-page class="flex flex-center">
+    <div class="background"></div>
+    <div class="overlay"></div>
+    <div class="container">
+      <!-- 导航栏 -->
+      <div class="button-group">
+        <q-btn @click="changeReportPeriod('daily')" :class="{'active': reportPeriod === 'daily'}" label="日报" style="color: black; width: 200px; background: rgb(229,193,133)" />
+        <q-btn @click="changeReportPeriod('weekly')" :class="{'active': reportPeriod === 'weekly'}" label="周报" style="color: black; width: 200px; background: rgb(229,193,133)" />
+      </div>
 
-    <!-- 表格部分 -->
-    <table class="data-table" v-show="reportData.length > 0">
-      <thead>
-        <tr>
-          <th>房间号</th>
-          <th>开关次数</th>
-          <th>调度次数</th>
-          <th>详单条数</th>
-          <th>调温次数</th>
-          <th>调风次数</th>
-          <th>请求时长</th>
-          <th>总费用</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(row, index) in reportData" :key="index">
-          <td>{{ row.room }}</td>
-          <td>{{ row.switchCount }}</td>
-          <td>{{ row.dispatchCount }}</td>
-          <td>{{ row.detailCount }}</td>
-          <td>{{ row.temperatureChangeCount }}</td>
-          <td>{{ row.fanSpeedChangeCount }}</td>
-          <td>{{ row.duration }}分钟</td>
-          <td>{{ row.totalCost }}元</td>
-        </tr>
-      </tbody>
-    </table>
+      <!-- 表格部分 -->
+      <table v-show="reportData.length > 0" class="data-table">
+        <thead>
+          <tr>
+            <th>房间号</th>
+            <th>开关次数</th>
+            <th>调度次数</th>
+            <th>详单条数</th>
+            <th>调温次数</th>
+            <th>调风次数</th>
+            <th>请求时长</th>
+            <th>总费用</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(row, index) in reportData" :key="index">
+            <td>{{ row.room }}</td>
+            <td>{{ row.switchCount }}</td>
+            <td>{{ row.dispatchCount }}</td>
+            <td>{{ row.detailCount }}</td>
+            <td>{{ row.temperatureChangeCount }}</td>
+            <td>{{ row.fanSpeedChangeCount }}</td>
+            <td>{{ row.duration }}分钟</td>
+            <td>{{ row.totalCost }}元</td>
+          </tr>
+        </tbody>
+      </table>
 
-    <!-- 报表图表部分 -->
-    <div class="chart-container">
-      <button @click="viewChart('line')">折线图</button>
-      <button @click="viewChart('pie')">饼图</button>
-      <!-- 使用 v-show 控制这里的 chart div -->
-      <div v-show="reportData.length > 0" ref="chartContainer" class="chart"></div>
+      <!-- 报表图表部分 -->
+      <div class="chart-container">
+        <q-btn @click="viewChart('line')" label="折线图" style="color: black; width: 200px; background: rgb(229,193,133)" class="chart-btn" />
+        <q-btn @click="viewChart('pie')" label="饼图" style="color: black; width: 200px; background: rgb(229,193,133)" class="chart-btn" />
+        <div v-show="reportData.length > 0" ref="chartContainer" class="chart"></div>
+      </div>
     </div>
-  </div>
+  </q-page>
 </template>
 
 <script>
@@ -161,13 +164,38 @@ export default {
 </script>
 
 <style scoped>
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../assets/images/bedroom.png");
+  background-size: cover;
+  filter: blur(4px);
+  z-index: -1;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.3);
+  z-index: 0;
+}
+
 .container {
-  max-width: 100%;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  max-width: 900px;
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
 .button-group {
@@ -176,22 +204,9 @@ export default {
   margin-bottom: 20px;
 }
 
-button {
-  padding: 10px 20px;
+.q-btn {
   margin: 0 10px;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-button.active {
-  background-color: #0056b3;
-}
-
-button:hover {
-  background-color: #0056b3;
+  font-weight: bold;
 }
 
 table {

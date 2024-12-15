@@ -19,104 +19,104 @@
 
     <q-drawer v-model="leftDrawerOpen">
       <q-list>
-        <q-item-label header> 功能列表 </q-item-label>
+        <q-item-label style="color: rgb(254, 166, 113);" header> 功能列表 </q-item-label>
 
         <q-item clickable v-ripple to="/">
           <q-item-section avatar>
-            <q-icon name="home" />
+            <q-icon name="home" style="color: rgb(254, 166, 113);"/>
           </q-item-section>
           <q-item-section>
-            <q-item-label>回到首页</q-item-label>
+            <q-item-label style="color: rgb(254, 166, 113);">回到首页</q-item-label>
           </q-item-section>
         </q-item>
 
         <q-item clickable v-ripple to="/check-in">
           <q-item-section avatar>
-            <q-icon name="hotel" />
+            <q-icon name="hotel" style="color: rgb(254, 166, 113);"/>
           </q-item-section>
           <q-item-section>
-            <q-item-label>入住界面</q-item-label>
+            <q-item-label style="color: rgb(254, 166, 113);">入住界面</q-item-label>
           </q-item-section>
         </q-item>
 
         <q-item clickable v-ripple to="/check-out">
           <q-item-section avatar>
-            <q-icon name="money" />
+            <q-icon name="money" style="color: rgb(254, 166, 113);"/>
           </q-item-section>
           <q-item-section>
-            <q-item-label>结账界面</q-item-label>
+            <q-item-label style="color: rgb(254, 166, 113);">结账界面</q-item-label>
           </q-item-section>
         </q-item>
 
         <q-item clickable v-ripple to="/monitoring">
           <q-item-section avatar>
-            <q-icon name="remove_red_eye" />
+            <q-icon name="remove_red_eye" style="color: rgb(254, 166, 113);"/>
           </q-item-section>
           <q-item-section>
-            <q-item-label>监控界面_经理</q-item-label>
+            <q-item-label style="color: rgb(254, 166, 113);">监控界面_经理</q-item-label>
           </q-item-section>
         </q-item>
 
         <q-item clickable v-ripple to="/admin">
           <q-item-section avatar>
-            <q-icon name="person" />
+            <q-icon name="person" style="color: rgb(254, 166, 113);"/>
           </q-item-section>
           <q-item-section>
-            <q-item-label>管理员界面</q-item-label>
+            <q-item-label style="color: rgb(254, 166, 113);">管理员界面</q-item-label>
           </q-item-section>
         </q-item>
 
         <q-item clickable v-ripple to="/monitor">
           <q-item-section avatar>
-            <q-icon name="remove_red_eye" />
+            <q-icon name="remove_red_eye" style="color: rgb(254, 166, 113);"/>
           </q-item-section>
           <q-item-section>
-            <q-item-label>监控界面_管理员</q-item-label>
+            <q-item-label style="color: rgb(254, 166, 113);">监控界面_管理员</q-item-label>
           </q-item-section>
         </q-item>
 
         <q-item clickable v-ripple to="/panel">
           <q-item-section avatar>
-            <q-icon name="person" />
+            <q-icon name="person" style="color: rgb(254, 166, 113);"/>
           </q-item-section>
           <q-item-section>
-            <q-item-label>房间1控制面板</q-item-label>
+            <q-item-label style="color: rgb(254, 166, 113);">房间1控制面板</q-item-label>
           </q-item-section>
         </q-item>
 
         <q-item clickable v-ripple to="/panel2">
           <q-item-section avatar>
-            <q-icon name="person" />
+            <q-icon name="person" style="color: rgb(254, 166, 113);"/>
           </q-item-section>
           <q-item-section>
-            <q-item-label>房间2控制面板</q-item-label>
+            <q-item-label style="color: rgb(254, 166, 113);">房间2控制面板</q-item-label>
           </q-item-section>
         </q-item>
 
         <q-item clickable v-ripple to="/panel3">
           <q-item-section avatar>
-            <q-icon name="person" />
+            <q-icon name="person" style="color: rgb(254, 166, 113);"/>
           </q-item-section>
           <q-item-section>
-            <q-item-label>房间3控制面板</q-item-label>
+            <q-item-label style="color: rgb(254, 166, 113);">房间3控制面板</q-item-label>
           </q-item-section>
         </q-item>
 
         <q-item clickable v-ripple to="/panel4">
           <q-item-section avatar>
-            <q-icon name="person" />
+            <q-icon name="person" style="color: rgb(254, 166, 113);"/>
           </q-item-section>
           <q-item-section>
-            <q-item-label>房间4控制面板</q-item-label>
+            <q-item-label style="color: rgb(254, 166, 113);">房间4控制面板</q-item-label>
           </q-item-section>
         </q-item>
 
         <q-item clickable v-ripple to="/panel5">
           <q-item-section avatar>
-            <q-icon name="person" />
+            <q-icon name="person" style="color: rgb(254, 166, 113);"/>
           </q-item-section>
           <q-item-section>
-            <q-item-label>房间5控制面板</q-item-label>
+            <q-item-label style="color: rgb(254, 166, 113);">房间5控制面板</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>

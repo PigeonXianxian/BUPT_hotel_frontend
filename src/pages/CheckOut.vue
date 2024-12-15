@@ -1,130 +1,118 @@
 <template>
-  <q-page class="container">
-    <h2 class="q-mb-md"><q-icon name="money" /> 结账</h2>
-
-    <!-- 下载账单部分 -->
-    <div class="download-section q-mb-md">
-      <!-- 输入框（下载账单） -->
-      <div class="q-mb-md flex-center">
+  <q-page class="flex flex-center">
+    <div class="background"></div>
+    <div class="overlay"></div> <!-- 透明图层 -->
+    <div class="container">
+      <!-- 左侧房间号查询 -->
+      <div class="left-side q-pa-md shadow-5">
+        <h5 class="text-center">房间号查询</h5>
         <q-input
           filled
-          v-model="billRoomId"
-          label="请输入房间号以下载账单："
+          v-model="roomNumber"
+          label="请输入房间号"
           type="number"
-          class="q-w-sm"
+          class="q-w-sm q-mb-md"
+          label-color="black"
         />
         <q-btn
-          label="下载账单"
-          icon="download"
-          @click="downloadBill"
-          color="primary"
-          class="q-mt-sm q-w-sm"
+          label="查询房间"
+          icon="search"
+          @click="queryRoom"
+          class="full-width q-mt-md"
+          style="color: black; width: 200px; background: rgb(229,193,133)"
         />
       </div>
 
-      <!-- 输入框（下载详单） -->
-      <div class="q-mb-md flex-center">
-        <q-input
-          filled
-          v-model="detailRoomId"
-          label="请输入房间号以下载详单："
-          type="number"
-          class="q-w-sm q-mt-md"
-        />
+      <!-- 右侧账单下载和详情 -->
+      <div class="right-side q-pa-md shadow-5">
+        <h5 class="text-center">账单管理</h5>
+        <div class="q-mb-md">
+          <q-input
+            filled
+            v-model="billRoomId"
+            label="请输入房间号以下载账单"
+            type="number"
+            class="q-w-sm"
+            label-color="black"
+          />
+          <q-btn
+            label="下载账单"
+            icon="download"
+            @click="downloadBill"
+            class="full-width q-mt-md"
+            style="color: black; width: 200px; background: rgb(229,193,133)"
+          />
+        </div>
+        <div class="q-mb-md">
+          <q-input
+            filled
+            v-model="detailRoomId"
+            label="请输入房间号以下载详单"
+            type="number"
+            class="q-w-sm"
+            label-color="black"
+          />
+          <q-btn
+            label="下载详单"
+            icon="download"
+            @click="downloadDetails"
+            class="full-width q-mt-md"
+            style="color: black; width: 200px; background: rgb(229,193,133)"
+          />
+        </div>
+        <q-separator class="q-mt-md q-mb-md" />
+
+        <!-- 账单展示 -->
+        <div v-if="showBill" class="bill-section">
+          <h3 class="text-center">账单</h3>
+          <q-table :rows="billItems" :columns="columns" flat class="q-mt-md">
+            <template v-slot:body="props">
+              <q-tr :props="props">
+                <q-td key="item" :props="props">{{ props.row.item }}</q-td>
+                <q-td key="cost" :props="props">{{ props.row.cost }}</q-td>
+              </q-tr>
+            </template>
+          </q-table>
+        </div>
+
+        <!-- 支付按钮 -->
         <q-btn
-          label="下载详单"
-          icon="download"
-          @click="downloadDetails"
-          color="primary"
-          class="q-mt-sm q-w-sm"
+          label="立即支付"
+          icon="payment"
+          style="color: black; width: 200px; background: rgb(229,193,133)"
+          @click="pay"
+          class="full-width q-mt-lg"
+          v-if="showBill"
         />
       </div>
     </div>
-
-    <q-separator class="q-mt-md q-mb-md" />
-
-    <!-- 房间号查询部分 -->
-    <div class="flex-center">
-      <q-input
-        filled
-        v-model="roomNumber"
-        label="房间号："
-        type="number"
-        class="q-w-sm"
-      />
-      <q-btn
-        label="查询房间"
-        icon="search"
-        @click="queryRoom"
-        class="q-mt-sm q-w-sm"
-      />
-    </div>
-
-    <q-separator class="q-mt-md q-mb-md" />
-
-    <!-- 账单显示部分 -->
-    <div v-if="showBill" class="bill-section q-pa-md">
-      <h3>账单</h3>
-      <q-table :rows="billItems" :columns="columns" flat class="q-mt-md">
-        <template v-slot:body="props">
-          <q-tr :props="props">
-            <q-td key="item" :props="props">
-              {{ props.row.item }}
-            </q-td>
-            <q-td key="cost" :props="props">
-              <span v-if="props.row.item.includes('费')">{{
-                props.row.cost
-              }}</span>
-              <span v-else>{{ props.row.cost }}</span>
-            </q-td>
-          </q-tr>
-        </template>
-      </q-table>
-    </div>
-
-    <!-- 支付按钮 -->
-    <q-btn
-      label="立即支付"
-      icon="payment"
-      color="negative"
-      @click="pay"
-      class="full-width"
-      v-if="showBill"
-    />
   </q-page>
 </template>
 
 <script>
-import CheckOut from "../models/Checkout"; // 引入 CheckOut 类
-import DownloadBill from "../models/download_bill"; // 引入 DownloadBill 类
-import DownloadDetail from "../models/download_detail"; // 引入 DownloadDetail 类
+import CheckOut from "../models/Checkout";
+import DownloadBill from "../models/download_bill";
+import DownloadDetail from "../models/download_detail";
 
 export default {
   name: "CheckOut",
   data() {
     return {
-      roomNumber: "", // 房间号（查询用）
-      billRoomId: "", // 房间号（下载账单用）
-      detailRoomId: "", // 房间号（下载详单用）
-      showBill: false, // 是否显示账单
-      billItems: [], // 账单项目（总费用）
+      roomNumber: "",
+      billRoomId: "",
+      detailRoomId: "",
+      showBill: false,
+      billItems: [],
       columns: [
-        {
-          name: "item",
-          required: true,
-          label: "项目",
-          align: "left",
-          field: "item",
-        },
+        { name: "item", label: "项目", align: "left", field: "item" },
         { name: "cost", label: "费用", align: "left", field: "cost" },
       ],
-      checkoutInstance: new CheckOut(), // 新建 CheckOut 实例
-      downloadBillAPI: new DownloadBill(), // 新建 DownloadBill 实例
-      downloadDetailAPI: new DownloadDetail(), // 新建 DownloadDetail 实例
+      checkoutInstance: new CheckOut(),
+      downloadBillAPI: new DownloadBill(),
+      downloadDetailAPI: new DownloadDetail(),
     };
   },
   methods: {
-    // 查询房间信息并生成账单
     async queryRoom() {
       if (!this.roomNumber) {
         this.$q.notify({
@@ -135,7 +123,6 @@ export default {
         });
         return;
       }
-
       const roomIdInt = parseInt(this.roomNumber, 10);
       if (isNaN(roomIdInt)) {
         this.$q.notify({
@@ -146,7 +133,6 @@ export default {
         });
         return;
       }
-
       await this.fetchBill(roomIdInt);
     },
 
@@ -195,7 +181,6 @@ export default {
       }
     },
 
-    // 下载账单
     async downloadBill() {
       if (!this.billRoomId) {
         this.$q.notify({
@@ -209,16 +194,13 @@ export default {
 
       try {
         this.downloadBillAPI.setRoomID(this.billRoomId);
-        const billContent = await this.downloadBillAPI.downloadBill(
-          "/api/print-bill"
-        );
+        const billContent = await this.downloadBillAPI.downloadBill("/api/print-bill");
         this.downloadPDF(billContent, "账单.pdf");
       } catch (error) {
         console.error("下载账单失败:", error);
       }
     },
 
-    // 下载详单
     async downloadDetails() {
       if (!this.detailRoomId) {
         this.$q.notify({
@@ -232,16 +214,13 @@ export default {
 
       try {
         this.downloadDetailAPI.setRoomID(this.detailRoomId);
-        const detailsContent = await this.downloadDetailAPI.downloadDetail(
-          "/api/print-detail"
-        );
+        const detailsContent = await this.downloadDetailAPI.downloadDetail("/api/print-detail");
         this.downloadPDF(detailsContent, "详单.pdf");
       } catch (error) {
         console.error("下载详单失败:", error);
       }
     },
 
-    // 下载 PDF 文件
     downloadPDF(blob, filename) {
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
@@ -253,13 +232,62 @@ export default {
 </script>
 
 <style scoped>
-.q-w-sm {
-  max-width: 300px;
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
+  background-image: url("../assets/images/bedroom.png");
+  background-size: cover;
+  filter: blur(4px);
+  z-index: -1;
 }
-.flex-center {
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.3);
+  z-index: 0;
+}
+
+.container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+  max-width: 900px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.left-side, .right-side {
+  width: 48%;
+  background-color: rgba(255, 240, 212, 0.9);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+h5.text-center {
+  text-align: center;
+  font-weight: bold;
+}
+
+.q-btn--standard {
+  font-weight: bold;
+}
+
+.q-btn {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.q-table {
+  border-radius: 8px;
+}
+
+.q-mt-md, .q-mb-md {
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 </style>
