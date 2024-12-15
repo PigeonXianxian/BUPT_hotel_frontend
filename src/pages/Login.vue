@@ -5,7 +5,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: #669fef;
+      background-color: #feea80;
     "
   >
     <div
@@ -73,7 +73,7 @@
           <el-form-item>
             <el-button
               type="primary"
-              style="width: 100%; background-color: #669fef; height: 40px"
+              style="width: 100%; background-color: #fec979; height: 40px"
               @click="login"
               >登录</el-button
             >
@@ -81,13 +81,13 @@
           <div style="display: flex">
             <div style="flex: 1; text-align: left">
               还没有账号？<span
-                style="color: #669fef; cursor: pointer"
+                style="color: #fec979; cursor: pointer"
                 @click="$router.push('/register')"
                 >注册</span
               >
             </div>
             <div style="flex: 1; text-align: right">
-              <span style="color: #669fef; cursor: pointer">忘记密码</span>
+              <span style="color: #fec979; cursor: pointer">忘记密码</span>
             </div>
           </div>
         </el-form>
@@ -100,7 +100,7 @@
 import { reactive } from "vue";
 import ValidCode from "src/components/ValidCode.vue";
 import User from "src/models/Login";
-import { ElForm, ElFormItem, ElInput, ElButton } from 'element-plus';
+import { ElForm, ElFormItem, ElInput, ElButton } from "element-plus";
 const USER = reactive(new User());
 
 export default {
@@ -110,7 +110,7 @@ export default {
     ElForm,
     ElFormItem,
     ElInput,
-    ElButton
+    ElButton,
   },
   data() {
     // 验证码校验
