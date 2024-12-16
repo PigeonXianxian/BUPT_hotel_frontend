@@ -79,7 +79,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-ripple to="/panel">
+        <q-item clickable v-ripple to="/panel1">
           <q-item-section avatar>
             <q-icon name="person" style="color: rgb(254, 166, 113)" />
           </q-item-section>

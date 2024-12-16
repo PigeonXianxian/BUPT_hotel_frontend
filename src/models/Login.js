@@ -6,6 +6,7 @@ export default class User {
     this.password = "114514";
   }
 
+  // 用户登录
   async Login(apiPath) {
     const apiUrl = `${API_ENDPOINT}${apiPath}`;
 
@@ -24,26 +25,45 @@ export default class User {
       if (response.ok) {
         const result = await response.json();
         console.log("用户登录成功", result);
-        const userType = result.userType;
-        if (userType === "customer") {
-          window.location.href = "/panel"; // 顾客
-        } else if (userType === "manager") {
-          window.location.href = "/monitoring"; // 经理
-        } else if (userType === "reception") {
-          window.location.href = "/check-in"; // 前台
-        } else if (userType === "administrator") {
-          window.location.href = "/admin"; // 管理员
-        } else {
-          console.error("未知用户类型");
+
+        const { userType, roomId } = result;
+
+        switch (userType) {
+          case "customer":
+            // 对于顾客，将房间号添加到URL中
+            if (roomId) {
+              window.location.href = `/panel${roomId}`;
+            } else {
+              console.error("顾客登录缺少房间号");
+            }
+            break;
+
+          case "manager":
+            window.location.href = "/monitoring";
+            break;
+
+          case "reception":
+            window.location.href = "/check-in";
+            break;
+
+          case "administrator":
+            window.location.href = "/admin";
+            break;
+
+          default:
+            console.error("未知用户类型:", userType);
         }
       } else {
-        console.error("用户登录失败:", response.statusText);
+        // 处理登录失败
+        const errorData = await response.json();
+        console.error("用户登录失败:", errorData.msg || response.statusText);
       }
     } catch (error) {
       console.error("请求发生错误:", error);
     }
   }
 
+  // 用户注册
   async Register(apiPath) {
     const apiUrl = `${API_ENDPOINT}${apiPath}`;
 

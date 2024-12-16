@@ -150,6 +150,7 @@ watch(
   }
 );
 
+/*
 // 定时器相关逻辑
 let intervalId = null;
 
@@ -166,6 +167,7 @@ onBeforeUnmount(() => {
     clearInterval(intervalId);
   }
 });
+*/
 </script>
 
 <style scoped>

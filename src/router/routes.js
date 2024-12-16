@@ -20,7 +20,7 @@ const routes = [
     component: () => import("layouts/MainLayout.vue"),
     children: [
       { path: "", component: Home },
-      { path: "panel", component: panelPage },
+      { path: "panel1", component: panelPage },
       { path: "panel2", component: panelPage2 },
       { path: "panel3", component: panelPage3 },
       { path: "panel4", component: panelPage4 },
